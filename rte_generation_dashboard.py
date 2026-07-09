@@ -28,8 +28,11 @@ st.set_page_config(page_title="Power Generation Dashboard", layout="wide")
 
 @st.cache_data  #to prevent reloading data on every interaction
 
+#retrieve MotherDuck token from Streamlit's secret management
+token = st.secrets["motherduck_token"]
+
 def load_data():
-    con = duckdb.connect('md:rte_data')
+    con = duckdb.connect(f"md:rte_data?motherduck_token={token}")
 
     df = con.sql("""
             SELECT 
