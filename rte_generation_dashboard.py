@@ -29,7 +29,7 @@ st.set_page_config(page_title="Power Generation Dashboard", layout="wide")
 @st.cache_data  #to prevent reloading data on every interaction
 
 def load_data():
-    con = duckdb.connect('rte_data.duckdb')
+    con = duckdb.connect('md:rte_data.duckdb')
 
     df = con.sql("""
             SELECT 
