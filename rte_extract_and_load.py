@@ -36,7 +36,7 @@ base64_creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode(
 #Input Parameters
 search_start_date = pd.to_datetime("2026-07-07")
 todays_date = datetime.now()
-database_name = "md:rte_data.duckdb"
+database_name = "md:rte_data"
 
 #Token & API endpoints
 token_url = "https://digital.iservices.rte-france.com/token/oauth/"
