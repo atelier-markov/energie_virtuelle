@@ -1,0 +1,4 @@
+- name: Run data update script
+  env:
+    MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+  run: python rte_extract_and_load.py
