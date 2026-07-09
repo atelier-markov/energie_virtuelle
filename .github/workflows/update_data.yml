@@ -1,6 +1,21 @@
-- name: Run data update script
-  env:
-    RTE_CLIENT_ID: ${{ secrets.RTE_CLIENT_ID }}
-    RTE_CLIENT_SECRET: ${{ secrets.RTE_CLIENT_SECRET }}
-    MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
-  run: python rte_extract_and_load.py
+name: Daily Data Update
+
+on:
+  schedule:
+    - cron: '0 10 * * *'  #run at 10h00 utc every day
+  workflow_dispatch:  #allows manual trigger from GitHub UI
+
+jobs:
+  update-database:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write #needed to push changes back
+
+    steps:
+      - name: Run data update script
+        env:
+          RTE_CLIENT_ID: ${{ secrets.RTE_CLIENT_ID }}
+          RTE_CLIENT_SECRET: ${{ secrets.RTE_CLIENT_SECRET }}
+          MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+        run: python rte_extract_and_load.py
