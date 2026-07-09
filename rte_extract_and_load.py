@@ -27,8 +27,8 @@ import duckdb
 from rte_get_functions import *
 
 #Configuration
-client_id = "22cda964-8ac4-46fc-a385-a273ba95e267"
-client_secret = "ed69b832-69c3-4f37-8a9b-efd8d15075d5"
+client_id = ${{ secrets.RTE_CLIENT_ID }}
+client_secret = ${{ secrets.RTE_CLIENT_SECRET }}
 base64_creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
 
 #Input Parameters
