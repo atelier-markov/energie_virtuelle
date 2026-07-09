@@ -1,0 +1,8 @@
+base64
+pandas
+datetime
+requests
+duckdb
+json
+streamlit
+plotly
