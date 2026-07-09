@@ -26,15 +26,17 @@ import duckdb
 
 from rte_get_functions import *
 
+import os
+
 #Configuration
-client_id = ${{ secrets.RTE_CLIENT_ID }}
-client_secret = ${{ secrets.RTE_CLIENT_SECRET }}
+client_id = os.environ.get("RTE_CLIENT_ID")
+client_secret = os.environ.get("RTE_CLIENT_SECRET")
 base64_creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
 
 #Input Parameters
 search_start_date = pd.to_datetime("2026-07-07")
 todays_date = datetime.now()
-database_name = "rte_data.duckdb"
+database_name = "md:rte_data.duckdb"
 
 #Token & API endpoints
 token_url = "https://digital.iservices.rte-france.com/token/oauth/"
@@ -93,3 +95,5 @@ except requests.exceptions.RequestException as e:
     print(f"An error occurred during the API request: {e}")
 except KeyError as e:
     print(f"Could not parse the expected data format. Check the API documentation. Missing key: {e}")
+
+con.close()
