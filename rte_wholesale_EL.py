@@ -1,4 +1,4 @@
-# rte_extract_and_load.py
+# rte_wholesale_EL.py
 #
 # Fetches hourly data from the Wholesale Market RTE API (https://data.rte-france.com/), and
 # loads it into a DuckDB database. 
