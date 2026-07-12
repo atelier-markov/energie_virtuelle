@@ -7,6 +7,9 @@
 #   takes Base 64 coded RTE user credentials and token URL (typically "https://digital.iservices.rte-france.com/token/oauth/")
 #   to return temporary access token (valid for 2 hours).
 # 
+# create_or_update_table(con, table_name, df):
+#    Creates or updates a table table_name in a DuckDB connection con with the content in the dataframe df.
+#
 # get_actual_generations_per_production_type(sandbox, token, start_date, end_date):
 #   Accesses the actual_generations_per_production_type resource in sandbox mode or not (boolean).
 #   Retrieves hourly generation values in MW organized by production type (biomass, solar, nuclear, etc.)
@@ -295,34 +298,25 @@ def get_france_power_exchanges(sandbox, token):
     }
 
     if sandbox:
-        api_url = "https://digital.iservices.rte-france.com/open_api/wholesale_market/v/sandbox/france_power_exchanges"
+        api_url = "https://digital.iservices.rte-france.com/open_api/wholesale_market/v3/sandbox/france_power_exchanges"
         response = requests.get(api_url, headers=headers)
     else:
-        api_url = f"https://digital.iservices.rte-france.com/open_api/wholesale_market/v/france_power_exchanges"
+        api_url = f"https://digital.iservices.rte-france.com/open_api/wholesale_market/v3/france_power_exchanges"
         response = requests.get(api_url, headers=headers)
 
     response.raise_for_status() #raises an error for bad status codes
 
     full_response = response.json()
-    tempo_data = full_response['france_power_exchanges']
+    wholesale_data = full_response['france_power_exchanges']
 
-    # Optional: Save to JSON file
+    #Optional: Save to JSON file
     # with open('data.json', 'w') as f:
     #     json.dump(full_response, f)    
 
     all_rows = []
 
-    if sandbox:
-        for data_item in tempo_data:     #sandbox version
-            value_item = data_item['values']
-            all_rows.append({
-                "start_date": value_item['start_date'],
-                "end_date": value_item['end_date'],
-                "value": value_item['value'],
-                "price": value_item['price']
-            })
-    else:
-        for value_item in tempo_data['values']: #Non-sandbox version
+    for item in wholesale_data:      
+        for value_item in item['values']:
             all_rows.append({
                 "start_date": value_item['start_date'],
                 "end_date": value_item['end_date'],
