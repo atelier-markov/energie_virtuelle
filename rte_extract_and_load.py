@@ -44,33 +44,6 @@ token_url = "https://digital.iservices.rte-france.com/token/oauth/"
 #Get token
 token = get_rte_token(base64_creds, token_url)
 
-#Load onto DuckDB database
-
-def create_or_update_table(con, table_name, df):
-    result = con.sql(f"""
-        SELECT COUNT(*)
-        FROM information_schema.tables
-        WHERE table_name = '{table_name}'
-    """).fetchone()[0]
-
-    if result>0:   #add to existing table
-        df_existing = con.sql(f"SELECT * FROM {table_name}").df()
-
-        #left join to find what's in df but not df_existing
-        new_rows = df.merge(df_existing, how='left', indicator=True)
-        new_rows = new_rows[new_rows['_merge'] == 'left_only'].drop('_merge', axis=1)
-
-        con.sql(f"INSERT INTO {table_name} BY NAME SELECT * FROM new_rows")
-                
-        print(new_rows.head())
-        print(f"Added {len(new_rows)} rows") 
-
-    else:   #create new table
-        con.sql(f"CREATE TABLE {table_name} AS SELECT * FROM df")
-
-        print(df.head())
-        print(f"Total rows: {len(df)}") 
-
 #Create/connect to database
 con = duckdb.connect(database_name)
 
