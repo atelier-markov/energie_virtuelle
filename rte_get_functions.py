@@ -17,7 +17,11 @@
 #
 # get_tempo_like_calendars(sandbox, token, start_date, end_date, fallback_status):
 #   Accesses the tempo_like_calendars resource in sandbox mode or not (boolean).
-#   Retrieves daily color values (indicative of power cost)
+#   Retrieves daily EDF tempo color values (insentive system for consumer pricing)
+#
+# get_france_power_exchanges(sandbox, token):
+#   Accesses the france_power_exchanges resource in sandbox mode or not (boolean).
+#   Retrieves hourly energy prices (in €/MWh) and electricity market volume (in MW)
 #
 # get_consumption_short_term(sandbox, token, start_date, end_date):
 #   Accesses the short_term resource in sandbox mode or not (boolean).
@@ -256,6 +260,58 @@ def get_tempo_like_calendars(sandbox, token, start_date=todays_date, end_date=to
 
     return df
 
+def get_france_power_exchanges(sandbox, token):
+    print("Fetching hourly price and market volume data...")
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/json"
+    }
+
+    if sandbox:
+        api_url = "https://digital.iservices.rte-france.com/open_api/wholesale_market/v/sandbox/france_power_exchanges"
+        response = requests.get(api_url, headers=headers)
+    else:
+        api_url = f"https://digital.iservices.rte-france.com/open_api/wholesale_market/v/france_power_exchanges"
+        response = requests.get(api_url, headers=headers)
+
+    response.raise_for_status() #raises an error for bad status codes
+
+    full_response = response.json()
+    tempo_data = full_response['france_power_exchanges']
+
+    # Optional: Save to JSON file
+    # with open('data.json', 'w') as f:
+    #     json.dump(full_response, f)    
+
+    all_rows = []
+
+    if sandbox:
+        for data_item in tempo_data:     #sandbox version
+            value_item = data_item['values']
+            all_rows.append({
+                "start_date": value_item['start_date'],
+                "end_date": value_item['end_date'],
+                "value": value_item['value'],
+                "price": value_item['price']
+            })
+    else:
+        for value_item in tempo_data['values']: #Non-sandbox version
+            all_rows.append({
+                "start_date": value_item['start_date'],
+                "end_date": value_item['end_date'],
+                "value": value_item['value'],
+                "price": value_item['price']
+            })
+   
+    df = pd.DataFrame(all_rows)
+
+    # Convert date columns to datetime
+    df['start_date'] = pd.to_datetime(df['start_date'])
+    df['end_date'] = pd.to_datetime(df['end_date'])
+
+    return df
+    
 #Type: "ACTUAL", "ID", "D-1", or "D-2"
 def get_consumption_short_term(sandbox, token, start_date=todays_date, end_date=todays_date):   #, type=""
     print("Fetching short-term consumption data...")
