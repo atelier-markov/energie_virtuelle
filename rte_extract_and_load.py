@@ -20,7 +20,7 @@
 
 import base64
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 import duckdb
 
@@ -34,8 +34,9 @@ client_secret = os.environ.get("RTE_CLIENT_SECRET")
 base64_creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
 
 #Input Parameters
-search_start_date = pd.to_datetime("2026-07-07")
 todays_date = datetime.now()
+search_start_date = todays_date - timedelta(days = 7) #pd.to_datetime("2026-07-07")
+
 database_name = "md:rte_data"
 
 #Token & API endpoints
@@ -60,9 +61,9 @@ try:
     table_name = "rte_tempo"
     create_or_update_table(con, table_name, df)
 
-    df = get_france_power_exchanges(sandbox=False, token=token)
-    table_name = "rte_wholesale"
-    create_or_update_table(con, table_name, df)
+    # df = get_france_power_exchanges(sandbox=False, token=token)
+    # table_name = "rte_wholesale"
+    # create_or_update_table(con, table_name, df)
 
     df = get_consumption_short_term(sandbox=False, token=token, start_date=search_start_date, end_date=todays_date)
     table_name = "rte_consumption"
