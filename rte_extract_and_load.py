@@ -87,6 +87,10 @@ try:
     table_name = "rte_tempo"
     create_or_update_table(con, table_name, df)
 
+    df = get_france_power_exchanges(sandbox=False, token=token)
+    table_name = "rte_wholesale"
+    create_or_update_table(con, table_name, df)
+
     df = get_consumption_short_term(sandbox=False, token=token, start_date=search_start_date, end_date=todays_date)
     table_name = "rte_consumption"
     create_or_update_table(con, table_name, df)
