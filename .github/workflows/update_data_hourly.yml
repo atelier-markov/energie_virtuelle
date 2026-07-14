@@ -2,7 +2,7 @@ name: Hourly Data Update
 
 on:
   schedule:
-    - cron: '0 * * * *'  #run hourly
+    - cron: '0 14 * * *'  #run daily after update
   workflow_dispatch:  #allows manual trigger from GitHub UI
 
 jobs:
