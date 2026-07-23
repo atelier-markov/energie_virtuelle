@@ -1,6 +1,6 @@
 pandas
 datetime
 requests
-duckdb
+duckdb==1.5.4
 streamlit
 plotly
