@@ -24,6 +24,7 @@
 import streamlit as st
 import duckdb
 import pandas as pd
+import numpy as np
 from datetime import timedelta
 import plotly.express as px
 from rte_vpp_optimizer import optimize_vpp
