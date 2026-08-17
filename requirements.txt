@@ -1,7 +1,8 @@
 pandas
+numpy
+scipy
 datetime
 requests
 duckdb<=1.5.4
 streamlit
 plotly
-scipy
