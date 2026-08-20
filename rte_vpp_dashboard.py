@@ -41,9 +41,13 @@ with col2:
 
 ######################################################################
 
+@st.cache_resource
+def get_connection():
+    return duckdb.connect('md:rte_data')
+    
 @st.cache_data
 def load_data():
-    con = duckdb.connect('md:rte_data')
+    con = get_connection()
 
     df = con.sql("""
           SELECT
