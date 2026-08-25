@@ -26,6 +26,12 @@ import plotly.express as px
 
 st.set_page_config(page_title="Power Generation Dashboard", layout="wide")
 
+col1, col2 = st.columns([4,1])  # 4 parts left, 1 part right
+with col2:
+    if st.button("Clear Cache"):
+        st.cache_data.clear()
+        st.rerun()
+
 @st.cache_resource
 def get_connection():
     return duckdb.connect('md:rte_data')
