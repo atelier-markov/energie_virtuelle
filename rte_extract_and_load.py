@@ -35,7 +35,7 @@ base64_creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode(
 
 #Input Parameters
 todays_date = datetime.now()
-search_start_date = todays_date - timedelta(days = 7) #pd.to_datetime("2026-07-07")
+search_start_date = todays_date - timedelta(days = 14) #pd.to_datetime("2026-07-07")
 
 database_name = "md:rte_data"
 
