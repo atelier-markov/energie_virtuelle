@@ -57,9 +57,9 @@ try:
     # table_name = "rte_generation_per_unit"
     # create_or_update_table(con, table_name, df)
 
-    df = get_tempo_like_calendars(sandbox=False, token=token, start_date=search_start_date, end_date=todays_date, fallback_status="false")
-    table_name = "rte_tempo"
-    create_or_update_table(con, table_name, df)
+    # df = get_tempo_like_calendars(sandbox=False, token=token, start_date=search_start_date, end_date=todays_date, fallback_status="false")
+    # table_name = "rte_tempo"
+    # create_or_update_table(con, table_name, df)
 
     df = get_france_power_exchanges(sandbox=False, token=token)
     table_name = "rte_wholesale"
