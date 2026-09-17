@@ -111,6 +111,10 @@ st.markdown("""
         padding: 20px;
         margin: 10px 0;
         background-color: rgba(255, 0, 0, 0.05);
+        max-height: 150px;
+        max-width: 350px;
+        overflow-y: auto;    /* Enable vertical scrolling */
+        overflow-x: hidden;  /* Hide horizontal scrolling */
     }
     .red-box h3 {
         color: #ff0000;
