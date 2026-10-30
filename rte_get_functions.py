@@ -113,7 +113,7 @@ def get_actual_generations_per_production_type(sandbox, token, start_date=todays
         raise ValueError("end_date must be later than start_date")
     if difference.days>155:
         raise ValueError("Do not exceed a period of 155 days per call")
-    if start_date<pd.to_datetime("2014-12-15"):
+    if start_date<pd.to_datetime("2014-12-15", utc=True):
         raise ValueError("start_date must be later than 2014-12-15")
 
     #Once the token is obtained, API calls now use "application/json":
@@ -172,7 +172,7 @@ def get_actual_generations_per_unit(sandbox, token, start_date=todays_date, end_
         raise ValueError("end_date must be later than start_date")
     if difference.days>7:
         raise ValueError("Do not exceed a period of 7 days per call")
-    if start_date<pd.to_datetime("2011-12-13"):
+    if start_date<pd.to_datetime("2011-12-13", utc=True):
         raise ValueError("start_date must be later than 2011-12-13")
     
     headers = {
@@ -217,9 +217,9 @@ def get_actual_generations_per_unit(sandbox, token, start_date=todays_date, end_
     df = pd.DataFrame(all_rows)
 
     # Convert date columns to datetime
-    df['start_date'] = pd.to_datetime(df['start_date'])
-    df['end_date'] = pd.to_datetime(df['end_date'])
-    df['updated_date'] = pd.to_datetime(df['updated_date'], errors="coerce")
+    df['start_date'] = pd.to_datetime(df['start_date'], utc=True)
+    df['end_date'] = pd.to_datetime(df['end_date'], utc=True)
+    df['updated_date'] = pd.to_datetime(df['updated_date'], errors="coerce", utc=True)
 
     return df
 
@@ -233,7 +233,7 @@ def get_tempo_like_calendars(sandbox, token, start_date=todays_date, end_date=to
         raise ValueError("end_date must be later than start_date")
     if difference.days>366:
         raise ValueError("Do not exceed a period of 366 days per call")
-    if start_date<pd.to_datetime("2014-01-09"):
+    if start_date<pd.to_datetime("2014-01-09", utc=True):
         raise ValueError("start_date must be later than 2014-01-09")
     
     headers = {
@@ -286,9 +286,9 @@ def get_tempo_like_calendars(sandbox, token, start_date=todays_date, end_date=to
     df = pd.DataFrame(all_rows)
 
     # Convert date columns to datetime
-    df['start_date'] = pd.to_datetime(df['start_date'])
-    df['end_date'] = pd.to_datetime(df['end_date'])
-    df['updated_date'] = pd.to_datetime(df['updated_date'], errors="coerce")
+    df['start_date'] = pd.to_datetime(df['start_date'], utc=True)
+    df['end_date'] = pd.to_datetime(df['end_date'], utc=True)
+    df['updated_date'] = pd.to_datetime(df['updated_date'], errors="coerce", utc=True)
 
     return df
 
@@ -330,8 +330,8 @@ def get_france_power_exchanges(sandbox, token):
     df = pd.DataFrame(all_rows)
 
     # Convert date columns to datetime
-    df['start_date'] = pd.to_datetime(df['start_date'])
-    df['end_date'] = pd.to_datetime(df['end_date'])
+    df['start_date'] = pd.to_datetime(df['start_date'], utc=True)
+    df['end_date'] = pd.to_datetime(df['end_date'], utc=True)
 
     return df
     
@@ -345,7 +345,7 @@ def get_consumption_short_term(sandbox, token, start_date=todays_date, end_date=
         raise ValueError("end_date must be later than start_date")
     if difference.days>186:
         raise ValueError("Do not exceed a period of 186 days per call")
-    if start_date<pd.to_datetime("2012-12-17"):
+    if start_date<pd.to_datetime("2012-12-17", utc=True):
         raise ValueError("start_date must be later than 2012-12-17")
     
     headers = {
@@ -392,8 +392,8 @@ def get_consumption_short_term(sandbox, token, start_date=todays_date, end_date=
     df = pd.DataFrame(all_rows)
 
     # Convert date columns to datetime
-    df['start_date'] = pd.to_datetime(df['start_date'])
-    df['end_date'] = pd.to_datetime(df['end_date'])
+    df['start_date'] = pd.to_datetime(df['start_date'], utc=True)
+    df['end_date'] = pd.to_datetime(df['end_date'], utc=True)
     df['updated_date'] = pd.to_datetime(df['updated_date'], errors="coerce", utc=True)
 
     return df
