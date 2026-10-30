@@ -157,8 +157,8 @@ def get_actual_generations_per_production_type(sandbox, token, start_date=todays
     df = pd.DataFrame(all_rows)
 
     # Convert date columns to datetime
-    df['start_date'] = pd.to_datetime(df['start_date'])
-    df['end_date'] = pd.to_datetime(df['end_date'])
+    df['start_date'] = pd.to_datetime(df['start_date'], utc=True)
+    df['end_date'] = pd.to_datetime(df['end_date'], utc=True)
     df['updated_date'] = pd.to_datetime(df['updated_date'], errors="coerce")
 
     return df
