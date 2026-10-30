@@ -83,8 +83,11 @@ def create_or_update_table(con, table_name, df):
         WHERE table_name = '{table_name}'
     """).fetchone()[0]
 
-    if result>0:   #add to existing table
+    if result>0:   #add to existing table      
         df_existing = con.sql(f"SELECT * FROM {table_name}").df()
+
+        if 'updated_date' in df_existing.columns:
+            df_existing['updated_date'] = pd.to_datetime(df_existing['updated_date'], errors="coerce", utc=True)
 
         #left join to find what's in df but not df_existing
         new_rows = df.merge(df_existing, how='left', indicator=True)
@@ -391,6 +394,6 @@ def get_consumption_short_term(sandbox, token, start_date=todays_date, end_date=
     # Convert date columns to datetime
     df['start_date'] = pd.to_datetime(df['start_date'])
     df['end_date'] = pd.to_datetime(df['end_date'])
-    df['updated_date'] = pd.to_datetime(df['updated_date'], errors="coerce")
+    df['updated_date'] = pd.to_datetime(df['updated_date'], errors="coerce", utc=True)
 
     return df
